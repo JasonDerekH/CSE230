@@ -2,11 +2,23 @@
 //
 
 #include <iostream>
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
-}
+/******************************
+* Prompts user for our numbers *
+*******************************/
+cout << "What is your vertical velocity(m / s) ? " << end1;
+//insert cin statement
+
+cout << "What is your horizontal velocity(m / s) ? " << end1;
+//insert cin statement
+
+cout << "What is your altitude(m) ? " << end1;
+//insert cin statement
+
+cout << "What is the angle of the LM where 0 is up(degrees) ? " << end1;
+//insert cin statement
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
