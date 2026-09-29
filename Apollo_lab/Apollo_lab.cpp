@@ -1,6 +1,6 @@
 /*************************************************************
  * 1. Name:
- *      Riley Cluff
+ *      Jason Hollingsworth & Riley Cluff
  * 2. Assignment Name:
  *      Lab 02: Apollo 11
  * 3. Assignment Description:
@@ -8,8 +8,9 @@
  * 4. What was the hardest part? Be as specific as possible.
  *      The assignment went well, the hardest part of the assignment
  * was the implementation of the simulate funciton. Making sure that 
+ I could go for 5 seconds and then continue after entering a new angle.
  * 5. How long did it take for you to complete the assignment?
- *      -total time in hours: reading the assignment, submitting, and writing code-
+ *      3.5 hours
  *****************************************************************/
 
 #include <iostream>  // for CIN and COUT
