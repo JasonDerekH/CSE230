@@ -1,6 +1,10 @@
 /**********************************************************************
- * LAB 06
- * Lunar Lander simulation. This is the Game class and main()
+ * Source File:
+ *    LAB 06
+ * Author:
+ *    Br. Helfrich, modified by <your name>
+ * Summary:
+ *    Lunar Lander simulation. This is the Simulator class and main()
  **********************************************************************/
 
 #include "position.h"    // everything should have a point
@@ -12,7 +16,6 @@
 #include <cmath>         // for SQRT
 #include <cassert>       // for ASSERT
 using namespace std;
-
 
 /*************************************************************************
  * SIMULATOR
@@ -33,31 +36,30 @@ public:
     // display stuff on the screen
     void display();
 
-    unsigned char phase;
-    Angle a;
-    Ground ground;
-    Position posLander;
-    Position posStar;
+    unsigned char phase;    // animation frame for the twinkling star
+    Angle a;                // orientation of the lander
+    Ground ground;          // the lunar surface
+    Position posLander;     // where the lander is on the screen
+    Position posStar;       // where the star is on the screen
 };
 
 /**********************************************************
- * DISPLAY
- * Draw on the screen
+ * SIMULATOR : DISPLAY
+ * Draw the ground, the lander, and a star on the screen
  **********************************************************/
 void Simulator::display()
 {
-   ogstream gout;
+    ogstream gout;
 
-   // draw the ground
-   ground.draw(gout);
+    // draw the ground
+    ground.draw(gout);
 
-   // draw the lander
-   gout.drawLander(posLander, a.getRadians());
+    // draw the lander
+    gout.drawLander(posLander, a.getRadians());
 
-   // draw a star
-   gout.drawStar(posStar, phase++);
+    // draw a star
+    gout.drawStar(posStar, phase++);
 }
-
 
 /*************************************
  * CALLBACK
@@ -65,22 +67,22 @@ void Simulator::display()
  **************************************/
 void callBack(const Interface* pUI, void* p)
 {
-   // the first step is to cast the void pointer into a game object. This
-   // is the first step of every single callback function in OpenGL. 
-   Simulator * pSimulator = (Simulator *)p;
+    // the first step is to cast the void pointer into a simulator object.
+    // This is the first step of every single callback function in OpenGL.
+    Simulator* pSimulator = (Simulator*)p;
 
-   // draw the game
-   pSimulator->display();
+    // draw the game
+    pSimulator->display();
 
-   if (pUI->isRight())
-       pSimulator->a.add(-0.1);   // rotate right here
-   if (pUI->isLeft())
-       pSimulator->a.add(0.1);    // rotate left here
-
-
+    // rotate the lander with the left and right arrow keys
+    if (pUI->isRight())
+        pSimulator->a.add(-0.1);   // rotate right here
+    if (pUI->isLeft())
+        pSimulator->a.add(0.1);    // rotate left here
 }
 
 /*********************************
+ * MAIN
  * Main is pretty sparse.  Just initialize
  * my LM type and call the display engine.
  * That is all!
@@ -88,27 +90,26 @@ void callBack(const Interface* pUI, void* p)
 #ifdef _WIN32
 #include <windows.h>
 int WINAPI WinMain(
-   _In_ HINSTANCE hInstance,
-   _In_opt_ HINSTANCE hPrevInstance,
-   _In_ LPSTR pCmdLine,
-   _In_ int nCmdShow)
+    _In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPSTR pCmdLine,
+    _In_ int nCmdShow)
 #else // !_WIN32
 int main(int argc, char** argv)
 #endif // !_WIN32
 {
-   // Run the unit tests
-   testRunner();
+    // Run the unit tests
+    testRunner();
 
-   
-   // Initialize OpenGL
-   Position posUpperRight(400, 400);
-   Interface ui("Lunar Lander", posUpperRight);
+    // Initialize OpenGL
+    Position posUpperRight(400, 400);
+    Interface ui("Lunar Lander", posUpperRight);
 
-   // Initialize the game class
-   Simulator simulator(posUpperRight);
+    // Initialize the game class
+    Simulator simulator(posUpperRight);
 
-   // set everything into action
-   ui.run(callBack, (void *)&simulator);
+    // set everything into action
+    ui.run(callBack, (void*)&simulator);
 
-   return 0;
+    return 0;
 }

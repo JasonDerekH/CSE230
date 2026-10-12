@@ -15,19 +15,22 @@ class TestVelocity;
 class TestAcceleration;
 class TestLander;
 
-// for add()
+// for add() and set()
 class Acceleration;
 class Angle;
 
 /*********************************************
- * Velocity
- * I feel the need, the need for speed
+ * VELOCITY
+ * I feel the need, the need for speed. Stores
+ * the horizontal and vertical components of
+ * an object's speed.
  *********************************************/
 class Velocity
 {
 	// for unit tests
 	friend TestPosition;
 	friend TestVelocity;
+	friend TestLander;
 
 public:
 	// constructors

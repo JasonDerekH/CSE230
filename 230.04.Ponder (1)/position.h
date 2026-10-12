@@ -1,6 +1,6 @@
 /***********************************************************************
  * Header File:
- *    POSITION 
+ *    POSITION
  * Author:
  *    Br. Helfrich
  * Summary:
@@ -8,7 +8,6 @@
  ************************************************************************/
 
 #pragma once
-
 
 class Velocity;        // for Position::add()
 class Acceleration;    // for Position::add()
@@ -33,10 +32,14 @@ public:
     // getters
     double getX() const { return x; }
     double getY() const { return y; }
+
+    // true when both coordinates match exactly
     bool operator == (const Position& rhs) const
     {
         return x == rhs.x && y == rhs.y;
     }
+
+    // true when either coordinate differs
     bool operator != (const Position& rhs) const
     {
         return x != rhs.x || y != rhs.y;
@@ -48,6 +51,8 @@ public:
     void addX(double x) { this->x += x; }
     void addY(double y) { this->y += y; }
     void add(const Acceleration& a, const Velocity& v, double t);
+
+    // copy both coordinates from another position
     Position& operator = (const Position& rhs)
     {
         x = rhs.x;
