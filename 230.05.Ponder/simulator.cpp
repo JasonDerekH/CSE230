@@ -7,23 +7,25 @@
  *    Lunar Lander simulation. This is the Simulator class and main()
  **********************************************************************/
 
-#include "position.h"      // everything should have a point
-#include "angle.h"         // angle of the lander
-#include "uiInteract.h"    // for INTERFACE
-#include "uiDraw.h"        // for RANDOM and DRAW*
-#include "ground.h"        // for GROUND
-#include "lander.h"        // for LANDER
-#include "thrust.h"        // for THRUST
-#include "acceleration.h"  // for ACCELERATION
-#include "star.h"          // for STAR
-#include "test.h"          // for the unit tests
-#include <cmath>           // for SQRT
-#include <cassert>         // for ASSERT
+#include "acceleration.h" // for ACCELERATION
+#include "angle.h"        // angle of the lander
+#include "ground.h"       // for GROUND
+#include "lander.h"       // for LANDER
+#include "position.h"     // everything should have a point
+#include "star.h"         // for STAR
+#include "test.h"         // for the unit tests
+#include "thrust.h"       // for THRUST
+#include "uiDraw.h"       // for RANDOM and DRAW*
+#include "uiInteract.h"   // for INTERFACE
+#include <cassert>        // for ASSERT
+#include <cmath>          // for SQRT
+#include <iomanip>        // for setprecision and fixed
+#include <algorithm>      // for max
 using namespace std;
 
-#define GRAVITY    -1.625   // gravity on the moon, in m/s^2
-#define TIME        0.1     // seconds per frame
-#define NUM_STARS   50      // how many stars in the sky
+#define GRAVITY -1.625 // gravity on the moon, in m/s^2
+#define TIME 0.1       // seconds per frame
+#define NUM_STARS 50   // how many stars in the sky
 
 /*************************************************************************
  * SIMULATOR
@@ -31,30 +33,41 @@ using namespace std;
  *************************************************************************/
 class Simulator
 {
-public:
-    // set up the simulator
-    Simulator(const Position& posUpperRight) :
-        ground(posUpperRight),
-        lander(posUpperRight)
-    {
-        // the lander starts out of play, so put it on the board
-        lander.reset(posUpperRight);
+ public:
+   /*********************************************
+    * name:    CONSTRUCTOR
+    * input:   upper-right corner of the screen
+    * output:  initialized simulator
+    *********************************************/
+   Simulator(const Position &posUpperRight) : ground(posUpperRight),
+                                              lander(posUpperRight)
+   {
+      // the lander starts out of play, so put it on the board
+      lander.reset(posUpperRight);
 
-        // scatter the stars across the sky
-        for (Star& star : stars)
-            star.reset(posUpperRight.getX(), posUpperRight.getY());
-    }
+      // scatter the stars across the sky
+      for (Star &star : stars)
+         star.reset(posUpperRight.getX(), posUpperRight.getY());
+   }
 
-    // display stuff on the screen
-    void display();
+   /*********************************************
+    * name:    DISPLAY
+    * input:   nothing
+    * output:  draws the stars, ground, and lander
+    *********************************************/
+   void display();
 
-    // move the lander one frame
-    void move(const Interface* pUI);
+   /*********************************************
+    * name:    MOVE
+    * input:   user interface
+    * output:  advances the simulation one frame
+    *********************************************/
+   void move(const Interface *pUI);
 
-    Star stars[NUM_STARS];  // the twinkling stars
-    Ground ground;          // the lunar surface
-    Lander lander;          // the lunar module
-    Thrust thrust;          // which thrusters are firing
+   Star stars[NUM_STARS]; // the twinkling stars
+   Ground ground;         // the lunar surface
+   Lander lander;         // the lunar module
+   Thrust thrust;         // which thrusters are firing
 };
 
 /**********************************************************
@@ -63,17 +76,41 @@ public:
  **********************************************************/
 void Simulator::display()
 {
-    ogstream gout;
+   ogstream gout;
 
-    // draw the stars first so everything else is in front of them
-    for (Star& star : stars)
-        star.draw(gout);
+   // draw the stars first so everything else is in front of them
+   for (Star &star : stars)
+      star.draw(gout);
 
-    // draw the ground
-    ground.draw(gout);
+   // draw the ground
+   ground.draw(gout);
 
-    // draw the lander and its flames
-    lander.draw(thrust, gout);
+   // draw the lander and its flames
+   lander.draw(thrust, gout);
+
+   // draw a simple reset button in the upper-right corner
+   gout.drawRectangle(Position(330.0, 350.0), Position(390.0, 380.0),
+                      0.2, 0.2, 0.2);
+   ogstream resetLabel(Position(341.0, 368.0));
+   resetLabel << "RESET";
+
+   // display the current flight information in the upper-left corner
+   ogstream hud(Position(20.0, 380.0));
+   hud << "Fuel:     " << lander.getFuel() << " lbs\n"
+       << "Altitude: " << (int)max(0.0, ground.getElevation(lander.getPosition())) << " meters\n"
+       << "Speed:    " << fixed << setprecision(2) << lander.getSpeed() << " m/s";
+
+   // display the final outcome after the lander reaches the ground
+   if (lander.isLanded())
+   {
+      ogstream message(Position(150.0, 270.0));
+      message << "The Eagle has landed!";
+   }
+   else if (lander.isDead())
+   {
+      ogstream message(Position(125.0, 270.0));
+      message << "Houston, we have a problem!";
+   }
 }
 
 /**********************************************************
@@ -81,45 +118,56 @@ void Simulator::display()
  * Read the controls, apply physics, move the lander,
  * and check whether we have landed or crashed
  **********************************************************/
-void Simulator::move(const Interface* pUI)
+void Simulator::move(const Interface *pUI)
 {
-    // see which thrusters the user is firing
-    thrust.set(pUI);
+   // GLUT reports mouse Y from the top of the window. The reset button is
+   // x=330..390 and y=350..380 in game coordinates.
+   if (pUI->isMouseClick() &&
+       pUI->mouseX() >= 330 && pUI->mouseX() <= 390 &&
+       pUI->mouseY() <= 50)
+   {
+      lander.reset(Position(400.0, 400.0));
+      ground.reset();
+      return;
+   }
 
-    // once we have landed or crashed, nothing moves
-    if (!lander.isFlying())
-        return;
+   // see which thrusters the user is firing
+   thrust.set(pUI);
 
-    // apply the physics for this frame
-    Acceleration acceleration = lander.input(thrust, GRAVITY);
-    lander.coast(acceleration, TIME);
+   // once we have landed or crashed, nothing moves
+   if (!lander.isFlying())
+      return;
 
-    // touched the landing pad: safe if slow enough, dead if not
-    if (ground.onPlatform(lander.getPosition(), lander.getWidth()))
-    {
-        if (lander.getSpeed() <= lander.getMaxSpeed())
-            lander.land();
-        else
-            lander.crash();
-    }
-    // touched anywhere else on the ground: dead
-    else if (ground.hitGround(lander.getPosition(), lander.getWidth()))
-        lander.crash();
+   // apply the physics for this frame
+   Acceleration acceleration = lander.input(thrust, GRAVITY);
+   lander.coast(acceleration, TIME);
+
+   // touched the landing pad: safe if slow enough, dead if not
+   if (ground.onPlatform(lander.getPosition(), lander.getWidth()))
+   {
+      if (lander.getSpeed() <= lander.getMaxSpeed())
+         lander.land();
+      else
+         lander.crash();
+   }
+   // touched anywhere else on the ground: dead
+   else if (ground.hitGround(lander.getPosition(), lander.getWidth()))
+      lander.crash();
 }
 
 /*************************************
  * CALLBACK
  * Handle one frame of the simulator
  **************************************/
-void callBack(const Interface* pUI, void* p)
+void callBack(const Interface *pUI, void *p)
 {
-    // the first step is to cast the void pointer into a simulator object.
-    // This is the first step of every single callback function in OpenGL.
-    Simulator* pSimulator = (Simulator*)p;
+   // the first step is to cast the void pointer into a simulator object.
+   // This is the first step of every single callback function in OpenGL.
+   Simulator *pSimulator = (Simulator *)p;
 
-    // move the lander, then draw everything
-    pSimulator->move(pUI);
-    pSimulator->display();
+   // move the lander, then draw everything
+   pSimulator->move(pUI);
+   pSimulator->display();
 }
 
 /*********************************
@@ -135,22 +183,22 @@ int WINAPI WinMain(
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPSTR pCmdLine,
     _In_ int nCmdShow)
-#else // !_WIN32
-int main(int argc, char** argv)
+#else  // !_WIN32
+int main(int argc, char **argv)
 #endif // !_WIN32
 {
-    // Run the unit tests
-    testRunner();
+   // Run the unit tests
+   testRunner();
 
-    // Initialize OpenGL
-    Position posUpperRight(400, 400);
-    Interface ui("Lunar Lander", posUpperRight);
+   // Initialize OpenGL
+   Position posUpperRight(400, 400);
+   Interface ui("Lunar Lander", posUpperRight);
 
-    // Initialize the game class
-    Simulator simulator(posUpperRight);
+   // Initialize the game class
+   Simulator simulator(posUpperRight);
 
-    // set everything into action
-    ui.run(callBack, (void*)&simulator);
+   // set everything into action
+   ui.run(callBack, (void *)&simulator);
 
-    return 0;
+   return 0;
 }

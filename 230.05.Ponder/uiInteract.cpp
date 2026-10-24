@@ -151,6 +151,15 @@ void keyboardCallback(unsigned char key, int x, int y)
    ui.keyEvent(key, true /*fDown*/);
 }
 
+void mouseCallback(int button, int state, int x, int y)
+{
+   if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+   {
+      Interface ui;
+      ui.mouseEvent(x, y);
+   }
+}
+
 /************************************************************************
  * CLOSE CALLBACK
  * Get the close button to appear so we can exit
@@ -210,6 +219,7 @@ void Interface::keyEvent()
       isRightPress++;
    isSpacePress = false;
    isQPress     = false;
+   mouseLeftPress = false;
 }
 
 /************************************************************************
@@ -255,6 +265,9 @@ int           Interface::isLeftPress  = 0;
 int           Interface::isRightPress = 0;
 bool          Interface::isSpacePress = false;
 bool          Interface::isQPress     = false;
+bool          Interface::mouseLeftPress = false;
+int           Interface::mouseXPosition = 0;
+int           Interface::mouseYPosition = 0;
 bool          Interface::initialized  = false;
 double        Interface::timePeriod   = 1.0 / 30; // default to 30 frames/second
 unsigned long Interface::nextTick     = 0;        // redraw now please
@@ -301,6 +314,7 @@ void Interface::initialize(const char * title, const Position & ptUpperRight)
    glutDisplayFunc(   drawCallback    );
    glutIdleFunc(      drawCallback    );
    glutKeyboardFunc(  keyboardCallback);
+   glutMouseFunc(     mouseCallback);
    glutSpecialFunc(   keyDownCallback );
    glutSpecialUpFunc( keyUpCallback   );
 #ifdef __APPLE__

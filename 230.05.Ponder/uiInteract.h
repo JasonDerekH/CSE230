@@ -77,6 +77,10 @@ public:
    int  isRight()     const { return isRightPress; }
    bool isSpace()     const { return isSpacePress; }
    bool isQ()         const { return isQPress;     }
+   bool isMouseClick() const { return mouseLeftPress; }
+   int mouseX() const { return mouseXPosition; }
+   int mouseY() const { return mouseYPosition; }
+   void mouseEvent(int x, int y) { mouseXPosition = x; mouseYPosition = y; mouseLeftPress = true; }
    
    static void *p;                   // for client
    static void (*callBack)(const Interface *, void *);
@@ -94,6 +98,9 @@ private:
    static int  isRightPress;         //    "   right      "
    static bool isSpacePress;         //    "   space      "
    static bool isQPress;             //     "  q          "
+   static bool mouseLeftPress;       // left mouse button was clicked
+   static int mouseXPosition;        // mouse x coordinate
+   static int mouseYPosition;        // mouse y coordinate
 };
 
 
@@ -129,6 +136,8 @@ void keyUpCallback(int key, int x, int y);
  * the space bar or the letter 'q'
  ***************************************************************/
 void keyboardCallback(unsigned char key, int x, int y);
+
+void mouseCallback(int button, int state, int x, int y);
 
 /************************************************************************
  * RUN
