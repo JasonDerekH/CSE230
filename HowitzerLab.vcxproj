@@ -82,6 +82,7 @@
     <ClCompile Include="acceleration.cpp" />
     <ClCompile Include="ground.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="physics.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="projectile.cpp" />
     <ClCompile Include="velocity.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="angle.h" />
     <ClInclude Include="ground.h" />
     <ClInclude Include="gravity.h" />
+    <ClInclude Include="physics.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="simulation_constants.h" />

@@ -11,21 +11,55 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="acceleration.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ground.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="main.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="position.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="projectile.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="velocity.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="acceleration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ground.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="position.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="velocity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="acceleration.h"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="angle.h"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ground.h"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="gravity.h"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="position.h"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="projectile.h"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="simulation_constants.h"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="velocity.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="acceleration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="angle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gravity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="position.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simulation_constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="velocity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

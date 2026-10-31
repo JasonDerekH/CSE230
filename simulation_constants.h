@@ -8,5 +8,5 @@ namespace SimulationConstants
    constexpr double LAUNCH_ANGLE_DEGREES = 45.0;
    constexpr double GRAVITY_MPS2 = 9.80665;
    constexpr double TIME_STEP_SECONDS = 0.01;
-   constexpr double MAX_SIMULATION_SECONDS = 120.0;
+   constexpr double MAX_SIMULATION_SECONDS = 1000.0;
 }

@@ -29,9 +29,11 @@ public:
    double time() const { return time_; }
 
    // Inertia: velocity is retained unless an acceleration changes it.
-   Impact step(double dt, const Acceleration& acceleration, const Ground& ground);
+   Impact step(double dt, const Ground& ground);
 
 private:
+   Acceleration acceleration() const;
+
    Position position_;
    Velocity velocity_;
    double massKg_;
