@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4E3B9A5A-1AE4-4A9E-9A9B-FAF9C6D12301}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4E3B9A5A-1AE4-4A9E-9A9B-FAF9C6D12302}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="acceleration.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="ground.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="main.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="position.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="projectile.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="velocity.cpp"><Filter>Source Files</Filter></ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="acceleration.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="angle.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="ground.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="gravity.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="position.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="projectile.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="simulation_constants.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="velocity.h"><Filter>Header Files</Filter></ClInclude>
+  </ItemGroup>
+</Project>
